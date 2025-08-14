@@ -6,18 +6,15 @@ import {
   CheckSquare,
   MessageSquare,
   BarChart3,
-  Settings,
   Calendar,
-  Tag,
   Clock,
   TrendingUp,
-  Filter,
+  Tag,
 } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Button } from "@/components/ui/Button";
 import { Badge } from "@/components/ui/Badge";
-import { Card } from "@/components/ui/Card";
 import { useTasks } from "@/hooks/useTasks";
 import { useCategories } from "@/hooks/useCategories";
 import { ClientOnly } from "@/components/ui/ClientOnly";
@@ -145,23 +142,6 @@ export function Sidebar({ className }: SidebarProps) {
               </Link>
             )}
           </div>
-
-          {/* AI Insights Card */}
-          <Card className="p-4 bg-gradient-to-br from-purple-50 to-blue-50 dark:from-purple-900/20 dark:to-blue-900/20 border-purple-200 dark:border-purple-700">
-            <div className="flex items-center gap-2 mb-2">
-              <div className="w-6 h-6 bg-purple-500 rounded-full flex items-center justify-center">
-                <TrendingUp className="w-3 h-3 text-white" />
-              </div>
-              <span className="text-sm font-medium">AI Insights</span>
-            </div>
-            <p className="text-xs text-muted-foreground mb-3">
-              You have {taskCounts.high} high-priority tasks. Consider using AI
-              prioritization to optimize your workflow.
-            </p>
-            <Button size="sm" variant="outline" className="w-full text-xs">
-              Get AI Suggestions
-            </Button>
-          </Card>
         </div>
       </aside>
     </ClientOnly>

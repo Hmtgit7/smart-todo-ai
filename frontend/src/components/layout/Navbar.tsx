@@ -6,19 +6,13 @@ import {
   CheckSquare,
   MessageSquare,
   BarChart3,
-  Settings,
   Moon,
   Sun,
   User,
-  Bell,
-  Search,
-  Plus,
 } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Button } from "@/components/ui/Button";
-import { Input } from "@/components/ui/Input";
-import { Badge } from "@/components/ui/Badge";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -33,7 +27,6 @@ const navItems = [
   { href: "/tasks", label: "Tasks", icon: CheckSquare },
   { href: "/context", label: "Context", icon: MessageSquare },
   { href: "/analytics", label: "Analytics", icon: BarChart3 },
-  { href: "/settings", label: "Settings", icon: Settings },
 ];
 
 export function Navbar() {
@@ -74,38 +67,14 @@ export function Navbar() {
               })}
             </div>
 
-            {/* Search Bar - Hidden on mobile and tablet */}
-            <div className="hidden xl:flex flex-1 max-w-md mx-8">
-              <div className="relative w-full">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                <Input
-                  placeholder="Search tasks, context..."
-                  className="pl-10 glass"
-                />
-              </div>
-            </div>
-
             {/* Actions Section */}
             <div className="flex items-center gap-2 flex-shrink-0">
-              {/* Quick Add Task - Hidden on mobile */}
-              <Button size="sm" className="hidden sm:flex items-center gap-2">
-                <Plus className="w-4 h-4" />
-                Quick Add
-              </Button>
-
-              {/* Notifications */}
-              <Button variant="ghost" size="icon" className="relative">
-                <Bell className="h-5 w-5" />
-                <Badge className="absolute -top-1 -right-1 h-5 w-5 text-xs p-0 flex items-center justify-center">
-                  3
-                </Badge>
-              </Button>
-
               {/* Theme Toggle */}
               <Button
                 variant="ghost"
                 size="icon"
                 onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+                aria-label="Toggle theme"
               >
                 <Sun className="h-5 w-5 rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
                 <Moon className="absolute h-5 w-5 rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
@@ -121,7 +90,6 @@ export function Navbar() {
                 <DropdownMenuContent align="end">
                   <DropdownMenuItem>Profile</DropdownMenuItem>
                   <DropdownMenuItem>Settings</DropdownMenuItem>
-                  <DropdownMenuItem>Help</DropdownMenuItem>
                   <DropdownMenuItem className="text-destructive">
                     Sign Out
                   </DropdownMenuItem>
