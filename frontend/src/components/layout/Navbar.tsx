@@ -9,6 +9,7 @@ import {
   Moon,
   Sun,
   User,
+  Menu,
 } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -29,7 +30,11 @@ const navItems = [
   { href: "/analytics", label: "Analytics", icon: BarChart3 },
 ];
 
-export function Navbar() {
+interface NavbarProps {
+  onMobileMenuToggle?: () => void;
+}
+
+export function Navbar({ onMobileMenuToggle }: NavbarProps) {
   const pathname = usePathname();
   const { theme, setTheme } = useTheme();
 
@@ -69,6 +74,17 @@ export function Navbar() {
 
             {/* Actions Section */}
             <div className="flex items-center gap-2 flex-shrink-0">
+              {/* Mobile Menu Toggle */}
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={onMobileMenuToggle}
+                className="lg:hidden"
+                aria-label="Toggle mobile menu"
+              >
+                <Menu className="h-5 w-5" />
+              </Button>
+
               {/* Theme Toggle */}
               <Button
                 variant="ghost"

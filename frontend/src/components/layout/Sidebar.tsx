@@ -10,6 +10,7 @@ import {
   Clock,
   TrendingUp,
   Tag,
+  X,
 } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -34,9 +35,11 @@ const quickFilters = [
 
 interface SidebarProps {
   className?: string;
+  isMobile?: boolean;
+  onMobileClose?: () => void;
 }
 
-export function Sidebar({ className }: SidebarProps) {
+export function Sidebar({ className, isMobile = false, onMobileClose }: SidebarProps) {
   const pathname = usePathname();
   const { tasks } = useTasks();
   const { categories } = useCategories();
@@ -57,9 +60,28 @@ export function Sidebar({ className }: SidebarProps) {
     return { total, today, overdue, high };
   }, [tasks]);
 
+  const sidebarClasses = isMobile 
+    ? `w-full h-full overflow-y-auto ${className || ""}`
+    : `fixed left-0 top-16 h-[calc(100vh-4rem)] w-64 border-r bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 overflow-y-auto ${className || ""}`;
+
   return (
     <ClientOnly>
-      <aside className={`fixed left-0 top-16 h-[calc(100vh-4rem)] w-64 border-r bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 overflow-y-auto ${className}`}>
+      <aside className={sidebarClasses}>
+        {/* Mobile Header with Close Button */}
+        {isMobile && onMobileClose && (
+          <div className="flex items-center justify-between p-4 border-b">
+            <h2 className="text-lg font-semibold">Menu</h2>
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={onMobileClose}
+              aria-label="Close menu"
+            >
+              <X className="h-5 w-5" />
+            </Button>
+          </div>
+        )}
+        
         <div className="p-4 space-y-6">
           {/* Navigation */}
           <div className="space-y-2">
@@ -69,10 +91,10 @@ export function Sidebar({ className }: SidebarProps) {
             {navItems.map((item) => {
               const isActive = pathname === item.href;
               return (
-                <Link key={item.href} href={item.href}>
+                <Link key={item.href} href={item.href} onClick={isMobile ? onMobileClose : undefined}>
                   <Button
                     variant={isActive ? "secondary" : "ghost"}
-                    className={`w-full justify-start gap-3 ${
+                    className={`w-full justify-start gap-3 h-12 ${
                       isActive ? "bg-primary/10 text-primary" : ""
                     }`}
                   >
@@ -92,8 +114,8 @@ export function Sidebar({ className }: SidebarProps) {
             {quickFilters.map((filter) => {
               const count = taskCounts[filter.filter as keyof typeof taskCounts];
               return (
-                <Link key={filter.filter} href={`/tasks?filter=${filter.filter}`}>
-                  <Button variant="ghost" className="w-full justify-between">
+                <Link key={filter.filter} href={`/tasks?filter=${filter.filter}`} onClick={isMobile ? onMobileClose : undefined}>
+                  <Button variant="ghost" className="w-full justify-between h-12">
                     <div className="flex items-center gap-3">
                       <filter.icon className="w-4 h-4" />
                       {filter.label}
@@ -115,8 +137,8 @@ export function Sidebar({ className }: SidebarProps) {
               Categories
             </h3>
             {categories.slice(0, 6).map((category) => (
-              <Link key={category.id} href={`/tasks?category=${category.id}`}>
-                <Button variant="ghost" className="w-full justify-between">
+              <Link key={category.id} href={`/tasks?category=${category.id}`} onClick={isMobile ? onMobileClose : undefined}>
+                <Button variant="ghost" className="w-full justify-between h-12">
                   <div className="flex items-center gap-3">
                     <div
                       className="w-3 h-3 rounded-full"
@@ -131,10 +153,10 @@ export function Sidebar({ className }: SidebarProps) {
               </Link>
             ))}
             {categories.length > 6 && (
-              <Link href="/categories">
+              <Link href="/categories" onClick={isMobile ? onMobileClose : undefined}>
                 <Button
                   variant="ghost"
-                  className="w-full justify-start gap-3 text-muted-foreground"
+                  className="w-full justify-start gap-3 text-muted-foreground h-12"
                 >
                   <Tag className="w-4 h-4" />
                   View all categories
