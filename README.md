@@ -315,16 +315,16 @@ Content-Type: application/json
 ## 🎨 Screenshots
 
 ### Dashboard
-![Dashboard](screenshots/dashboard.png)
+![Dashboard](./screenshots/dashboard.png)
 
 ### Task Management
-![Task Management](screenshots/task-management.png)
+![Task Management](./screenshots/task-management.png)
 
 ### Context Input
-![Context Input](screenshots/context-input.png)
+![Context Input](./screenshots/context-input.png)
 
 ### AI Suggestions
-![AI Suggestions](screenshots/ai-suggestions.png)
+![AI Suggestions](./screenshots/ai-suggestions.png)
 
 ## 🔧 Development
 
