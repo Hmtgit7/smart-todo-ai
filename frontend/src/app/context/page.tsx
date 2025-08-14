@@ -7,7 +7,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/Card";
 import { Button } from "@/components/ui/Button";
 import { ContextForm } from "@/components/context/ContextForm";
 import { ContextList } from "@/components/context/ContextList";
-import { Dialog, DialogContent, DialogTrigger, DialogTitle } from "@/components/ui/Dialog";
+import { Dialog, DialogContent, DialogTrigger, DialogTitle, DialogDescription } from "@/components/ui/Dialog";
 import { useContextData } from "@/hooks/useContext";
 import { useAsync } from "@/hooks/useAsync";
 import { contextAPI } from "@/lib/api";
@@ -41,6 +41,9 @@ export default function ContextPage() {
           </DialogTrigger>
           <DialogContent className="max-w-2xl">
             <DialogTitle className="sr-only">Add Context Entry</DialogTitle>
+            <DialogDescription className="sr-only">
+              Add a new context entry from various sources like WhatsApp, email, notes, or calendar
+            </DialogDescription>
             <ContextForm onSuccess={() => setShowForm(false)} />
           </DialogContent>
         </Dialog>

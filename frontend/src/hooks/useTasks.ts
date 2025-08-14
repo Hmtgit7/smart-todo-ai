@@ -20,7 +20,10 @@ export function useTasks(initialFilters?: TaskFilters) {
       setError(null);
       const filtersToUse = currentFilters || memoizedFilters;
       const data = await taskAPI.getTasks(filtersToUse);
-      setTasks(data);
+      
+      // Filter out any tasks that don't have an ID
+      const validTasks = Array.isArray(data) ? data.filter(task => task && task.id !== undefined && task.id !== null) : [];
+      setTasks(validTasks);
     } catch (err) {
       setError("Failed to fetch tasks");
       toast.error("Failed to load tasks");
@@ -45,6 +48,14 @@ export function useTasks(initialFilters?: TaskFilters) {
   const createTask = useCallback(async (taskData: CreateTaskData): Promise<Task | null> => {
     try {
       const newTask = await taskAPI.createTask(taskData);
+      
+      // Ensure the task has all required fields
+      if (!newTask.id) {
+        console.error("Task created but missing ID:", newTask);
+        toast.error("Task created but missing required data");
+        return null;
+      }
+      
       setTasks((prev) => [newTask, ...prev]);
       toast.success("Task created successfully");
       return newTask;

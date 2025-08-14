@@ -38,7 +38,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/Select";
-import { Dialog, DialogContent, DialogTitle } from "@/components/ui/Dialog";
+import { Dialog, DialogContent, DialogTitle, DialogDescription } from "@/components/ui/Dialog";
 import { Badge } from "@/components/ui/Badge";
 import { useTasks } from "@/hooks/useTasks";
 import { useCategories } from "@/hooks/useCategories";
@@ -123,8 +123,12 @@ export const TaskList = React.memo(function TaskList({
     const { active, over } = event;
 
     if (active.id !== over?.id) {
-      const taskIds = filteredTasks.map((task) => task.id);
-      bulkPrioritize(taskIds);
+      const taskIds = filteredTasks
+        .map((task) => task.id)
+        .filter((id) => id !== undefined && id !== null);
+      if (taskIds.length > 0) {
+        bulkPrioritize(taskIds);
+      }
     }
   }, [filteredTasks, bulkPrioritize]);
 
@@ -337,7 +341,7 @@ export const TaskList = React.memo(function TaskList({
         onDragEnd={handleDragEnd}
       >
         <SortableContext
-          items={filteredTasks.map((task) => task.id.toString())}
+          items={filteredTasks.map((task) => (task.id || task.id === 0 ? task.id.toString() : `temp-${Math.random()}`))}
           strategy={verticalListSortingStrategy}
         >
           <div
@@ -405,6 +409,9 @@ export const TaskList = React.memo(function TaskList({
           <DialogTitle className="sr-only">
             {selectedTask ? 'Edit Task' : 'Create New Task'}
           </DialogTitle>
+          <DialogDescription className="sr-only">
+            {selectedTask ? 'Edit the selected task details' : 'Create a new task with AI-powered suggestions'}
+          </DialogDescription>
           <TaskForm
             task={selectedTask || undefined}
             onSubmit={handleTaskSubmit}
